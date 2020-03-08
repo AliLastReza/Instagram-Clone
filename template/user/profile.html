@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Profile</title>
+</head>
+<body>
+	<h3>Hi, {{request.user.username}}</h3>
+	<p> {{request.user.bio}}</p>
+	<form method="post" action="">
+		<input type="hidden" value="{{obj.user.username}}" name="username">
+		<input type="submit" value="Follow">
+	</form>
+</body>
+</html>

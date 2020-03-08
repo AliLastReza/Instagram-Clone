@@ -1,0 +1,54 @@
+from django.contrib.auth import get_user_model
+from django.core.validators import FileExtensionValidator
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
+
+from lib.common_models import BaseModel
+from location.models import Location
+
+User = get_user_model()
+
+
+class Post(BaseModel):
+    caption = models.TextField(_('caption'), blank=True)
+    user = models.ForeignKey(User, related_name='posts', on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, related_name='posts', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "{} ({})".format(self.user.username, self.id)
+
+
+class PostMedia(BaseModel):
+    IMAGE = 1
+    VIDEO = 2
+
+    TYPE_CHOICES = (
+        (IMAGE, _("Image")),
+        (VIDEO, _("Video")),
+    )
+    media_type = models.PositiveSmallIntegerField(_("media type"), choices=TYPE_CHOICES, default=IMAGE)
+    post = models.ForeignKey(Post, related_name='media', on_delete=models.CASCADE)
+    media_file = models.FileField(
+        _('media file'), upload_to='content/media/',
+        validators=[FileExtensionValidator(allowed_extensions=('jpg', 'jpeg', 'mp4', 'wmv', 'flv', 'png'))]
+    )
+
+    def __str__(self):
+        return '{} - {}'.format(str(self.post), self.get_media_type_display())
+
+
+class Tag(BaseModel):
+    title = models.CharField(_("title"), max_length=32)
+
+    def __str__(self):
+        return self.title
+
+
+class PostTag(BaseModel):
+    post = models.ForeignKey(Post, related_name='hashtags', on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, related_name='posts', on_delete=models.CASCADE)
+
+
+class TaggedUser(BaseModel):
+    user = models.ForeignKey(User, related_name='tagged_posts', on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, related_name='tagged_users', on_delete=models.CASCADE)
