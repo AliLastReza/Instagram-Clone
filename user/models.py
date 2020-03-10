@@ -42,6 +42,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
+    followers_count = models.PositiveSmallIntegerField(default=0)
+    following_count = models.PositiveSmallIntegerField(default=0)
     objects = UserManager()
 
     EMAIL_FIELD = 'email'
