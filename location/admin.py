@@ -1,3 +1,9 @@
 from django.contrib import admin
+from django.contrib.admin import register
 
-# Register your models here.
+from location.models import Location
+
+
+@register(Location)
+class LocationAdmin(admin.ModelAdmin):
+    list_display = ['title', 'points']

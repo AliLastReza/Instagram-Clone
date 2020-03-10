@@ -12,7 +12,7 @@ User = get_user_model()
 class Post(BaseModel):
     caption = models.TextField(_('caption'), blank=True)
     user = models.ForeignKey(User, related_name='posts', on_delete=models.CASCADE)
-    location = models.ForeignKey(Location, related_name='posts', on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, related_name='posts', on_delete=models.CASCADE, blank=True)
 
     class Meta:
         verbose_name = _("Post")
