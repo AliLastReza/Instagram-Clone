@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login, get_user_model
-from django.views.generic import FormView, UpdateView
+from django.views.generic import FormView, UpdateView, DetailView
 
 from user.forms import RegistrationForm, LoginForm
 
@@ -35,3 +35,10 @@ class ProfileUpdateView(UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+class ProfileDetailView(DetailView):
+    model = User
+    slug_url_kwarg = 'username'
+    slug_field = 'username'
+    template_name = 'user/profile.html'

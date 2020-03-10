@@ -17,8 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
+from user.views import ProfileDetailView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('user.urls')),
-    path('', TemplateView.as_view(template_name='user/profile.html'))
+    path('', TemplateView.as_view(template_name='user/profile.html')),
+    path('<str:username>/', ProfileDetailView.as_view(), name='profile')
+
 ]

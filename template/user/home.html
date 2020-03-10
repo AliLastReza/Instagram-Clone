@@ -5,7 +5,7 @@
 	<title>Profile</title>
 </head>
 <body>
-	<h3>Hi, {{object.username}}</h3>
-	<p>{{object.bio}}</p>
+	<h3>Hi, {{request.user.username}}</h3>
+	<p> {{request.user.bio}}</p>
 </body>
 </html>
