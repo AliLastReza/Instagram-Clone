@@ -3,6 +3,7 @@ from django.db import transaction
 from django.http import Http404
 from django.shortcuts import redirect
 from django.views import View
+from django.views.generic import ListView, DetailView
 
 from relation.models import Relation
 
@@ -29,3 +30,23 @@ class FollowView(View):
         else:
             Relation.objects.create(from_user=request.user, to_user=target_user)
         return redirect('/{}/'.format(target_user.username))
+
+
+class FollowerListView(ListView):
+    model = Relation
+    template_name = "relation/FollowerList.html"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(to_user__username=self.kwargs["username"])
+        return queryset
+
+
+class FollowingListView(ListView):
+    model = Relation
+    template_name = "relation/FollowingList.html"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(from_user__username=self.kwargs["username"])
+        return queryset
