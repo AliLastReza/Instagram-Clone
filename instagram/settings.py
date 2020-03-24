@@ -130,3 +130,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # Locale configurations
 LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 
+
+# Celery configs:
+CELERY_BROKER_URL = 'redis://localhost:6379/10'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/10'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Tehran'
+CELERY_ENABLE_UTC = False
