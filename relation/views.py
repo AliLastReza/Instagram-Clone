@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.db import transaction
 from django.http import Http404
 from django.shortcuts import redirect
 from django.views import View

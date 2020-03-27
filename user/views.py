@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth import login, get_user_model
 from django.views.generic import FormView, UpdateView, DetailView
 
 from relation.models import Relation

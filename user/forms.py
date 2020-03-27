@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth import get_user_model, authenticate, login
 from django.utils.translation import ugettext_lazy as _
 
+from user.utils import send_confirm_email, send_confirm_code
+
 User = get_user_model()
 
 
@@ -20,6 +22,8 @@ class RegistrationForm(forms.Form):
 
     def save(self):
         user = User.objects.create_user(**self.cleaned_data)
+        send_confirm_email(user)
+        send_confirm_code(user)
         return user
 
 
