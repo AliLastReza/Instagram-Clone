@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% for follower in object_list %}
+        <p>{{follower.from_user.username}}</p>
+    {% endfor %}
+    <p>this is testr</p>
+</body>
+</html>
