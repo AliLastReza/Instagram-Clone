@@ -31,7 +31,7 @@ def send_sms_api_kavenegar(username):
         params = {
             'sender': '',  # optional
             'receptor': phone_number,  # multiple mobile number, split by comma
-            'message': 'سلام کاربر {} به سایت ما خوش اومدید'.format(username),
+            'message': 'سلام کاربر {} عملیات ثبت نام با موفقیت انجام شد'.format(username),
         }
         print(params)
         response = api.sms_send(params)
