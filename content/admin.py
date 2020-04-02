@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.contrib.admin import register
 
-from content.models import PostMedia, Post, Tag, PostTag, TaggedUser
+
+# Register your models here.
+from content.models import Post, PostMedia, Tag, PostTag, TagegedUser
 
 
 class PostMediaInline(admin.TabularInline):
@@ -13,15 +15,15 @@ class PostTagInline(admin.TabularInline):
 
 
 class TaggedUserInline(admin.TabularInline):
-    model = TaggedUser
+    model = TagegedUser
 
 
 @register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['caption', 'user', 'location']
+    list_display = ('caption', 'user', 'location')
     inlines = (PostMediaInline, PostTagInline, TaggedUserInline)
 
 
 @register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    list_display = ['title', 'created_time']
+    list_display = ('title', 'created_time')

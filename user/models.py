@@ -3,10 +3,10 @@ from django.contrib.auth.models import AbstractUser, UserManager, PermissionsMix
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 from django.utils import timezone
-
 from django.utils.translation import ugettext_lazy as _
 
 
+# Create your models here.
 class User(AbstractBaseUser, PermissionsMixin):
     username_validator = UnicodeUsernameValidator()
 
@@ -21,11 +21,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         },
     )
     email = models.EmailField(_('email address'), blank=True)
-    phone_number = models.CharField(_("phone number"), blank=True, max_length=11)
-    avatar = models.ImageField(upload_to='users/avatar/', blank=True)
-    bio = models.TextField(_("bio"), blank=True)
-    website = models.URLField(_("website"), blank=True)
-    is_verified = models.BooleanField(_("is verified"), default=False)
+    phone_number = models.CharField(_("phone_number"), blank=True, max_length=11)
+    avatar = models.ImageField(upload_to='users/avatar', blank=True)
+    bio = models.TextField(_('bio'), blank=True)
+    website = models.URLField(_('website'), blank=True)
+    is_verified = models.BooleanField(_('is_verified'), default=False)
 
     is_staff = models.BooleanField(
         _('staff status'),
@@ -41,6 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         ),
     )
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+
     objects = UserManager()
 
     EMAIL_FIELD = 'email'
@@ -48,8 +49,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['email']
 
     class Meta:
-        verbose_name = _("user")
-        verbose_name_plural = _("users")
+        verbose_name = _('user')
+        verbose_name_plural = _('users')
 
     def clean(self):
         super().clean()

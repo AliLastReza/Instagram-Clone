@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Profile</title>
+    <meta charset="UTF-8">
+    <title>Profile</title>
 </head>
 <body>
-	<h3>username: {{object.username}}</h3>
-	<p>bio: {{object.bio}}</p>
-	<p>website: <a href="{{object.website}}">{{object.website}}</a></p>
-	<p>followers: {{followers_count}}</p>
-	<p>followings: {{followings_count}}</p>
-	<p>posts: {{posts_count}}</p>
-
-	<form action="{% url 'follow-unfollow' object.username %}" method="post">
-		{% csrf_token %}
-		<input type="submit" value="{% if is_following %}UnFollow{% else %}Follow{% endif %}">
-	</form>
-
-
+    <h3>username : {{object.username}}</h3>
+    <p>bio : {{object.bio}}</p>
+    <p><a href="{{object.website}}">{{object.website}}</a></p>
+    <p>followers count :<a href="{% url 'follower-show' object.username %}">{{followers_count}}</a></p>
+    <p>followings_count :<a href="{% url 'following-show' object.username %}">{{following_count}}</a></p>
+    <p>posts count: {{posts_count}}</p>
+    <form action="{% url 'follow_unfollow' object.username %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="{% if is_following %}UnFollow{% else %}Follow{% endif %}">
+    </form>
 </body>
 </html>

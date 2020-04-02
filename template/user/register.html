@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>user registration</title>
+    <meta charset="UTF-8">
+    <title>Register User</title>
 </head>
 <body>
-	<form action="{{form.action}}" method="post">
-		{% csrf_token %}
-		{{form}}
-		<input type="submit">
-	</form>
+
+    {% if request.user.is_authenticated%}
+        <p>if you want to be able create account you must logout first <a href="/auth/logout">Logout</a></p>
+    {% else %}
+           {{forms.error}}
+        <form action="{{form.action}}" method="post">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit" value="sumbit">
+        </form>
+    {% endif %}
+
+
+
 </body>
 </html>

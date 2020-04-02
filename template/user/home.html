@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Profile</title>
+    <meta charset="UTF-8">
+    <title>Profile</title>
 </head>
 <body>
-	<h3>Hi, {{request.user.username}}</h3>
-	<p> {{request.user.bio}}</p>
+    {% if request.user.is_authenticated %}
+        <h3>hi ,{{request.user.username}}</h3>
+        <a href="/auth/logout">LogOut</a>
+    {% else %}
+        <h3>you are not login</h3>
+        <a href="/auth/login">login</a>
+    {% endif %}
 </body>
 </html>

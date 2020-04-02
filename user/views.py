@@ -1,9 +1,12 @@
-from django.contrib.auth import login, get_user_model
-from django.views.generic import FormView, UpdateView, DetailView
+from django.contrib.auth import login, get_user_model, logout
+
+from django.views.generic import FormView, UpdateView, DetailView, RedirectView
+
+from user.forms import RegistrationForm
+
+from user.forms import LoginForm
 
 from relation.models import Relation
-from user.forms import RegistrationForm, LoginForm
-
 
 User = get_user_model()
 
@@ -18,7 +21,7 @@ class RegisterView(FormView):
         return super().form_valid(form)
 
 
-class LoginView(FormView):
+class Login(FormView):
     form_class = LoginForm
     template_name = 'user/login.html'
     success_url = '/'
@@ -28,7 +31,15 @@ class LoginView(FormView):
         return super().form_valid(form)
 
 
-class ProfileUpdateView(UpdateView):
+class Logout(RedirectView):
+    url = '/'
+
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return super(Logout, self).get(request,*args,**kwargs)
+
+
+class ProfileUpdate(UpdateView):
     model = User
     fields = ('username', 'avatar', 'bio', 'website')
     template_name = 'user/profile_update.html'
@@ -49,6 +60,6 @@ class ProfileDetailView(DetailView):
         user = self.get_object()
         context['posts_count'] = user.posts.count()
         context['followers_count'] = user.followers.count()
-        context['followings_count'] = user.followings.count()
+        context['following_count'] = user.following.count()
         context['is_following'] = Relation.objects.filter(from_user=self.request.user, to_user=user).exists()
         return context
