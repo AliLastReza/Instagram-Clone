@@ -8,8 +8,8 @@
 	<h3>username: {{object.username}}</h3>
 	<p>bio: {{object.bio}}</p>
 	<p>website: <a href="{{object.website}}">{{object.website}}</a></p>
-	<p>followers: {{followers_count}}</p>
-	<p>followings: {{followings_count}}</p>
+	<p>followers: <a href="{% url 'follower-detail' object.username %}">{{ followers_count }}</a></p>
+	<p>followings: <a href="{% url 'following-detail' object.username %}">{{ followings_count }}</a></p>
 	<p>posts: {{posts_count}}</p>
 
 	<form action="{% url 'follow-unfollow' object.username %}" method="post">

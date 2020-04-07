@@ -17,13 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
-from user.views import ProfileDetailView
+from user.views import ProfileDetailView, FollowerDetail, FollowingDetail
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('user.urls')),
     path('relation/', include('relation.urls')),
     path('', TemplateView.as_view(template_name='user/home.html')),
-    path('<str:username>/', ProfileDetailView.as_view(), name='profile')
+    path('<str:username>/', ProfileDetailView.as_view(), name='profile'),
+    path('<str:username>/followers', FollowerDetail.as_view(), name='follower-detail'),
+    path('<str:username>/followings', FollowingDetail.as_view(), name='following-detail'),
 
 ]

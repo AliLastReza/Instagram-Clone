@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{target_user}}</title>
+</head>
+<body>
+    {% for object in object_list %}
+            <a href="{% url 'profile' object%}" > {{ object }}</a>
+    {% endfor %}
+
+</body>
+</html>

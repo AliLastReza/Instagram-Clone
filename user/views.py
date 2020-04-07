@@ -1,5 +1,5 @@
 from django.contrib.auth import login, get_user_model
-from django.views.generic import FormView, UpdateView, DetailView
+from django.views.generic import FormView, UpdateView, DetailView, ListView
 
 from relation.models import Relation
 from user.forms import RegistrationForm, LoginForm
@@ -52,3 +52,41 @@ class ProfileDetailView(DetailView):
         context['followings_count'] = user.followings.count()
         context['is_following'] = Relation.objects.filter(from_user=self.request.user, to_user=user).exists()
         return context
+
+
+class FollowerDetail(ListView):
+    template_name = 'user/follower_detail.html'
+
+    def get_object(self):
+        target_user = User.objects.filter(username=self.kwargs.get('username')).first()
+        return target_user
+
+    def get_queryset(self):
+        user = self.get_object()
+        queryset = user.followers.all().values_list('from_user__username', flat=True)
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=None, **kwargs)
+        target_user = self.get_object()
+        context['target_user'] = target_user.username
+        return super().get_context_data(**context)
+
+
+class FollowingDetail(ListView):
+    template_name = 'user/following-detail.html'
+
+    def get_object(self):
+        target_user = User.objects.filter(username=self.kwargs.get('username')).first()
+        return target_user
+
+    def get_queryset(self):
+        user = self.get_object()
+        queryset = user.followings.all().values_list('to_user__username', flat=True)
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=None, **kwargs)
+        target_user = self.get_object()
+        context['target_user'] = target_user.username
+        return super().get_context_data(**context)
