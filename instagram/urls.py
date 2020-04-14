@@ -22,8 +22,8 @@ from user.views import ProfileDetailView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('user.urls')),
+    path('api/auth/', include('user.api.urls')),
     path('relation/', include('relation.urls')),
     path('', TemplateView.as_view(template_name='user/home.html')),
     path('<str:username>/', ProfileDetailView.as_view(), name='profile')
-
 ]
