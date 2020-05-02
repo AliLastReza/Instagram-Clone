@@ -2,8 +2,14 @@ from django.contrib.auth import get_user_model
 from django.http import Http404
 from django.shortcuts import redirect
 from django.views import View
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView
+from django.contrib.auth import get_user_model
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework import generics
 
+from relation.serializers import RelationSerializer
+from user.api.serializers import UserSerializer
 from relation.models import Relation
 
 User = get_user_model()
@@ -49,3 +55,14 @@ class FollowingListView(ListView):
         queryset = super().get_queryset()
         queryset = queryset.filter(from_user__username=self.kwargs["username"])
         return queryset
+
+
+class FollowerListAPIView(generics.ListAPIView):
+    authentication_classes = (JSONWebTokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = RelationSerializer
+    queryset = Relation.objects.select_related('to_user').all()
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(to_user=self.request.user)
