@@ -1,7 +1,7 @@
 from django.urls import path
 
-from relation.views import FollowView
+from relation.views import FollowersListAPIView
 
 urlpatterns = [
-    path('<str:username>/follow/', FollowView.as_view(), name='follow-unfollow')
+    path('followers/', FollowersListAPIView.as_view(), name='followers'),
 ]

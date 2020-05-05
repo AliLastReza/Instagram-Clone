@@ -12,7 +12,7 @@ class Comment(BaseModel):
     caption = models.TextField()
     user = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
-    reply_to = models.ForeignKey('self', related_name='replies', on_delete=models.CASCADE)
+    reply_to = models.ForeignKey('self', related_name='replies', on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name = _("Comment")

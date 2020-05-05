@@ -1,21 +1,28 @@
 from django.contrib.auth import get_user_model
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from user.api.serializers import UserSerializer
 
 User = get_user_model()
 
 
-class ProfileRetrieveAPIView(APIView):
+class ProfileRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_url_kwarg = 'username'
+    lookup_field = 'username'
 
-    def get(self, request, username, *args, **kwargs):
-        try:
-            user = User.objects.get(username=username)
-        except User.DoesNotExist:
-            return Response(
-                {'error': "User not found"}, status=status.HTTP_404_NOT_FOUND
-            )
-        serializer = UserSerializer(instance=user)
-        return Response(serializer.data)
+
+class ProfileRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
+    authentication_classes = (JSONWebTokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
+
+    def get_object(self):
+        return self.request.user
+
+
+# TODO: Add Profile list api view
+# class ProfileListAPIView...
