@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'relation.apps.RelationConfig',
     'user.apps.UserConfig',
     'rest_framework',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
