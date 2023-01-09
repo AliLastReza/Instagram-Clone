@@ -40,7 +40,7 @@ DEBUG = {}
 
 ALLOWED_HOSTS = {}
 
-CONNECTION_SETTING = (
+PG_DB = (
     'HOST': '{}',
     'NAME': '{}',
     'USER': '{}',
@@ -52,7 +52,7 @@ CONNECTION_SETTING = (
     data = data.replace('(', '{')
     data = data.replace(')', '}')
 
-    local_setting_path = os.path.join(BASE_DIR, 'instagram/local_setting.py')
+    local_setting_path = os.path.join(BASE_DIR, 'instagram/local_settings.py')
     save_to_file(local_setting_path, data)
     # log_info_msg(
     #     __name__,

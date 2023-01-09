@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 import datetime
 import os
+
 from instagram.local_settings import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -34,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'rest_framework_simplejwt',
 
     'activity.apps.ActivityConfig',
     'content.apps.ContentConfig',
@@ -79,11 +81,11 @@ WSGI_APPLICATION = 'instagram.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': DB['NAME'],
-        'USER': DB['USER'],
-        'PASSWORD': DB['PASS'],
-        'HOST': DB['HOST'],
-        'PORT': DB['PORT'],
+        'HOST': PG_DB['HOST'],
+        'NAME': PG_DB['NAME'],
+        'USER': PG_DB['USER'],
+        'PASSWORD':  PG_DB['PASSWORD'],
+        'PORT':  PG_DB['PORT'],
     }
 }
 
@@ -147,6 +149,13 @@ CELERY_ENABLE_UTC = True
 
 
 # JWT configurations
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+}
+
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=30 * 24 * 60 * 60),
 }
