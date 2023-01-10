@@ -12,17 +12,24 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import datetime
 import os
 
-from instagram.local_settings import *
+import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+env = environ.Env()
+# reading .env file
+environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.dev.env'))
+
+DEBUG = env('DEBUG', default=True)
+
+ALLOWED_HOSTS = env('ALLOWED_HOSTS', default=['*'])
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = SECRET_KEY_LOCAL
+SECRET_KEY = env('SECRET_KEY', default="django-insecure-@w6%i*cfvma^%o$q8k)_vql*bip(e0bjlw%#$zpjji%59rj6x!")
 
 # Application definition
 
@@ -81,11 +88,11 @@ WSGI_APPLICATION = 'instagram.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': PG_DB['HOST'],
-        'NAME': PG_DB['NAME'],
-        'USER': PG_DB['USER'],
-        'PASSWORD':  PG_DB['PASSWORD'],
-        'PORT':  PG_DB['PORT'],
+        'HOST': env('POSTGRES_HOST', default='localhost'),
+        'NAME': env('POSTGRES_DB_NAME'),
+        'USER': env('POSTGRES_USER'),
+        'PASSWORD': env('POSTGRES_PASSWORD'),
+        'PORT':  env('POSTGRES_PORT', default=5432),
     }
 }
 
@@ -138,10 +145,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # Locale configurations
 LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 
-
+REDIS_URL = 'redis://{host}:{port}/{db}'.format(host=env("REDIS_HOST", default='localhost'),
+                                                 port=env("REDIS_PORT", default=6379),
+                                                 db=env("REDIS_DB", default=10))
 # Celery configs:
-CELERY_BROKER_URL = 'redis://localhost:6379/10'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/10'
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Tehran'

@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - "15432:5432"
+    volumes:
+      - ./data/postgres/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: instagram
+      POSTGRES_USER: instagram
+      POSTGRES_PASSWORD: 1234567
+      PGDATA: /tmp
+
+  redis:
+    restart: always
+    image: redis:latest
+    ports:
+      - "16379:6379"
+    volumes:
+      - ./data/redisdata:/data
+
+  web:
+    build: .
+    restart: always
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/instagram
+      - ./static:/instagram/static
+    ports:
+      - "18000:8000"
+    env_file: .dev.env
+    environment:
+      POSTGRES_HOST: postgres
+      REDIS_HOST: redis
+    depends_on:
+      - postgres
+      - redis
